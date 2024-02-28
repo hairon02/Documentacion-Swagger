@@ -1,0 +1,2351 @@
+{
+    "swagger": "2.0",
+    "info": {
+    "version": "1.0.0",
+    "title": "REST API PORTAL VIDEOJUEGOS",
+    "description": "Esta es la documentación para un portal para un servicio de venta de videojuegos. La página está diseñada para poder vender y comprar cualquier tipo de videojuego.<html><body></body></html>",
+    "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/licenses/MIT"
+    }
+    },
+    "host": "localhost:3000",
+    "basePath": "",
+    "tags": [
+        {
+            "name": "Usuarios",
+            "description": "API para obtener información de los usuarios"
+        },
+        {
+            "name": "Roles",
+            "description": "API para obtener información de los roles"
+        },
+        {
+            "name": "Juegos",
+            "description": "API para obtener información de los juegos"
+        },
+        {
+            "name": "Transacciones",
+            "description": "API para obtener información de las transacciones"
+        },
+        {
+            "name": "Reembolsos",
+            "description": "API para obtener información de los reembolsos"
+        },
+        {
+            "name": "Carritos",
+            "description": "API para obtener información de los carritos de los usuarios"
+        },
+        {
+            "name": "Metodo de pago",
+            "description": "API para obtener información de los metodos de pago"
+        }
+          
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes":[
+        "application/json"
+    ],
+    "produces" :[
+        "application/json"
+    ],
+    "paths":
+    {
+        "/api/usuarios/mostrarUsuarios":{
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Listado de todos los usuarios en videojuegos.",
+                "description": "<p>Servicio que devuelve la información detallada de todos los usuarios que existen en la base videojuegos.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "nombre": "juan perez",
+                                    "nickname": "princesita123",
+                                    "correo": "afsda@gmail.com",
+                                    "password": "asdfas",
+                                    "id_rol": 1
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Usuarios"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                }
+            
+            }
+        },
+        "/api/usuarios/crearUsuario" :{
+            "post" :{
+                "summary" : "Creando un usuario",
+                "description": "<p>Servicio que permite crear un usuario en la base de datos.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "create",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters" : [
+                    {
+                        "name" : "Usuario",
+                        "in" : "body",
+                        "description" : "Usuario agregado",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoUsuario"
+                        }
+                    }
+                    
+                ],
+                "tags" : ["Usuarios"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Usuario agregado",
+                        "schema": {
+                            "$ref": "#/definitions/Usuario"
+                          }
+                    },
+                    "403":{
+                        "description" : "Prohibido"
+                    }
+                }
+            }
+           
+        },
+        "/api/usuarios/obtenerUsuario/{id}":
+        {
+            "get":{
+                "tags":["Usuarios"],
+                "summary":"Listado de usuarios",
+                "description":"Servicio que devuelve a un usuario por medio de su id",
+                "responses":{
+                    "200":{
+                    "description":"OK",
+                    "examples":{
+                        "application/json":[
+                            {"id": 3,
+                        "nombre": "Juan Perez",
+                        "nickname": "juan123",
+                        "correo": "juan@yeah.net",
+                        "password": "admin123",
+                        "id_rol": 3
+                        }
+                        ]
+                    },
+                    "schema":{
+                        "$ref": "#/definitions/Usuario"
+                    }
+                    },
+                    "403":{
+                        "description":"Prohibido"
+                    }
+                },
+                "parameters":[{
+                    "name":"id",
+                    "in":"path",
+                    "requiered":true,
+                    "description": "id",
+                    "type": "number",
+                    "default":"1"
+                }]
+            }
+        },
+        "/api/usuarios/actualizar/{id}": {
+            "put": {
+                "summary": "Modificando un usuario.",
+                "description": "Servicio que permite actualizar la info de usuario.",
+                "operationId": "update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in": "path",
+                        "description": "id del usuario",
+                        "required": true,
+                        "default":0
+                    },
+                    {
+                        "name":"Usuario",
+                        "in": "body",
+                        "description":"Nombre del usuario",
+                        "requiered" : true,
+                        "schema":{
+                            "$ref": "#/definitions/NuevoUsuario"
+                        }
+
+                    }
+                    
+                ],
+                "tags": ["Usuarios"],
+                "responses":{
+                    "201":{
+                        "description":"Modificado con exito"
+                    },
+                    "403":{
+                        "description":"Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/usuarios/eliminar/{id}":
+        {
+            "delete":{
+                "tags":["Usuarios"],
+                "summary":"Eliminado de usuarios",
+                "description":"Servicio que elimina a un usuario",
+                "responses":{
+                    "200":{
+                    "description":"OK"
+                    },
+                    "403":{
+                        "description":"Prohibido"
+                    }
+                },
+                "parameters":[{
+                    "name":"id",
+                    "in":"path",
+                    "requiered":true,
+                    "description": "id",
+                    "type": "number",
+                    "default":"1"
+                }
+                
+                ]
+            }
+        },
+        "/api/roles/mostrarRoles":{
+            "get" : {
+                "tags" : [
+                    "Roles"
+                ],
+                "summary" : "Listado de todos los roles en videojuegos",
+                "description" : "<p>Servicio que devuelve la información detallada de todos los roles que existen videojuegos.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses" : {
+                    "200" : {
+                        "description" : "OK",
+                        "examples" : {
+                            "application/json" : [
+                                {
+                                    "id" : 1,
+                                    "puesto" : "Vendedor"
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Roles"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                }
+               
+            }
+        },
+        "/api/roles/obtenerRol/{id}":{
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Obtiene un rol dentro de videojuegos.",
+                "description": "<p>Servicio que devuelve la información detallada de un rol existente.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id" : 1,
+                                    "puesto" : "Vendedor"
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Rol"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del rol.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                ]
+            }
+        },
+        "/api/roles/crearRol" :{
+            "post" :{
+                "summary" : "Crear un rol",
+                "description": "<p>Servicio que permite crear un rol en la base de datos.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "create",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters" : [
+                    {
+                        "name" : "Rol",
+                        "in" : "body",
+                        "description" : "Rol agregado",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoRol"
+                        }
+                    }
+                    
+                ],
+                "tags" : ["Roles"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Rol agregado"
+                    },
+                    "403":{
+                        "description" : "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/roles/actualizarRol/{id}" :{
+            "put" :{
+                "summary" : "Modifica rol.",
+                "description": "<p>Servicio que permite actualizar un rol existente en la base de datos.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "update",
+                "consumes" :[
+                    "application/json"
+                ],
+                "produces" :[
+                    "application/json"
+                ],
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "description" : "Id del rol.",
+                        "requiered" : true,
+                        "default" : 0
+                    },
+                    {
+                        "name" : "Rol",
+                        "in" : "body",
+                        "description" : "Rol modificado.",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoRol"
+                        }
+                    }
+                   
+                ],
+                "tags" : ["Roles"],
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/roles/eliminarRol/{id}":{
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Elimina un rol de videojuegos.",
+                "description": "<p>Servicio que elimina un rol existente.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del rol.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                    
+                ]
+            }
+        },
+        "/api/juegos/mostrarJuegos":{
+            "get": {
+                "tags": [
+                    "Juegos"
+                ],
+                "summary": "Listado de todos los videojuegos.",
+                "description": "<p>Servicio que devuelve la información detallada de todos los videojuegos que existen en la base videojuegos.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "titulo": "game of thrones",
+                                    "descripcion": "Un juego de peleas",
+                                    "genero": "fantasia",
+                                    "fecha_lanzamiento": "2021-04-20",
+                                    "precio": 100,
+                                    "estado": "alta",
+                                    "id_usuario": 1
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Juegos"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                }
+                
+            }
+        },
+        "/api/juegos/mostrarJuegosDisponibles":{
+            "get": {
+                "tags": [
+                    "Juegos"
+                ],
+                "summary": "Listado de todos los videojuegos disponibles.",
+                "description": "<p>Servicio que devuelve la información detallada de todos los videojuegos que existen en la base videojuegos que se puedan comprar.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "titulo": "game of thrones",
+                                    "descripcion": "Un juego de peleas",
+                                    "genero": "fantasia",
+                                    "fecha_lanzamiento": "2021-04-20",
+                                    "precio": 100,
+                                    "estado": "alta",
+                                    "id_usuario": 1
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Juegos"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                }
+                
+            }
+        },
+        "/api/juegos/mostrarJuegoGenero": {
+            "post": {
+                "summary": "Mostrar juegos segun el genero",
+                "description": "<p>Servicio que permite buscar los juegos que correspondan al genero que se desea. Los juegos deben estar dados de alta, no muestra aquellos que han sido dados de baja.</p><p>&nbsp;</p><p><em></em></p>",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters": [
+                {
+                  "in": "body",
+                  "name": "juegos",
+                  "description": "juegos del portal",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/JuegoGenero"
+                  }
+                }
+              ],
+              "tags" : ["Juegos"],
+              "responses": {
+                "200": {
+                  "description": "Juegos mostrado exitosamente",
+                  "schema": {
+                    "$ref": "#/definitions/Juegos"
+                  }
+                },
+                "403": {
+                  "description": "Juegos no encontrados"
+                }
+              }
+            }
+        },
+        "/api/juegos/juegoTitulo": {
+            "post": {
+                "summary": "Mostrar el juego por el titulo",
+                "description": "<p>Servicio que permite buscar un juego especifico por titulo. Los juegos deben estar dados de alta, no muestra aquellos que han sido dados de baja.</p><p>&nbsp;</p><p><em></em></p>",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters": [
+                {
+                  "in": "body",
+                  "name": "titulo",
+                  "description": "titulo del juego",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/titulo"
+                  }
+                }
+              ],
+              "tags" : ["Juegos"],
+              "responses": {
+                "200": {
+                  "description": "Juegos mostrado exitosamente",
+                  "schema": {
+                    "$ref": "#/definitions/Juegos"
+                  }
+                },
+                "403": {
+                  "description": "Juegos no encontrados"
+                }
+              }
+            }
+        },
+        "/api/juegos/obtenerJuego/{id}":{
+            "get": {
+                "tags": [
+                    "Juegos"
+                ],
+                "summary": "Obtiene un juego dentro de videojuegos.",
+                "description": "<p>Servicio que devuelve la información detallada de un videojuego dado de alta.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "titulo": "game of thrones",
+                                    "descripcion": "Un juego de peleas",
+                                    "genero": "fantasia",
+                                    "fecha_lanzamiento": "2021-04-20",
+                                    "precio": 100,
+                                    "estado": "alta",
+                                    "id_usuario": 1
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Juegos"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del videojuego.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                ]
+            }
+        },
+        "/api/juegos/bibliotecaJugador/{id}":{
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Mostrar juegos de un usuario.",
+                "description": "<p>Servicio que devuelve una lista de los videojuegos adquiridos por un usuario. No muestra los juegos en el que haya solicitado un reembolso.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "titulo": "Doom",
+                                    "descripcion": "Un sujeto que combate contra demonios",
+                                    "genero": "accion",
+                                    "fecha_lanzamiento": "2023-05-17T06:00:00.000Z",
+                                    "precio": 1600
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/tituloJuego"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del usuario.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                ]
+            }
+        },
+        "/api/juegos/juegoVendedor/{id}":{
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Mostrar juegos de un vendedor.",
+                "description": "<p>Servicio que devuelve una lista de los videojuegos del vendedor.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "titulo": "game of thrones",
+                                    "descripcion": "Un juego de peleas",
+                                    "genero": "fantasia",
+                                    "fecha_lanzamiento": "2021-04-20",
+                                    "precio": 100,
+                                    "estado": "alta",
+                                    "id_usuario": 1
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Juegos"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del usuario.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                ]
+            }
+        },
+        "/api/juegos/crearJuego" :{
+            "post" :{
+                "summary" : "Dar de alta un videojuego",
+                "description": "Servicio que crear un videojuego en la base de datos.",
+                "operationId" : "create",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters" : [
+                    {
+                        "name" : "Juego",
+                        "in" : "body",
+                        "description" : "Juego agregado",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoJuego"
+                        }
+                    }
+                    
+                ],
+                "tags" : ["Juegos"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Usuario agregado"
+                    },
+                    "403":{
+                        "description" : "Prohibido"
+                    }
+                   
+                }
+            }
+        },
+        "/api/juegos/actualizar/{id}" :{
+            "put" :{
+                "summary" : "Modifica juego.",
+                "description":"Servicio que permite modificar la informacion de un videojuego",
+                "operationId" : "update",
+                "consumes" :[
+                    "application/json"
+                ],
+                "produces" :[
+                    "application/json"
+                ],
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "description" : "Id del juego.",
+                        "requiered" : true,
+                        "default" : 0
+                    },
+                    {
+                        "name" : "Juego",
+                        "in" : "body",
+                        "description" : "Rol modificado.",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoJuego"
+                        }
+                    }
+                    
+                ],
+                "tags" : ["Juegos"],
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                   
+                }
+            }
+        },
+        "/api/juegos/estadoJuego/{id}" :{
+            "put" :{
+                "summary" : "Modificar estado de un videojuego.",
+                "description":"Servicio que permite modificar el estado de un videojuego para dar de alta o de baja un videojuego.",
+                "operationId" : "update",
+                "consumes" :[
+                    "application/json"
+                ],
+                "produces" :[
+                    "application/json"
+                ],
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "description" : "Id del juego.",
+                        "requiered" : true,
+                        "default" : 0
+                    },
+                    {
+                        "name" : "Juego",
+                        "in" : "body",
+                        "description" : "Juego dado de baja.",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/estadoJuego"
+                        }
+                    }
+                   
+                ],
+                "tags" : ["Juegos"],
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/juegos/eliminar/{id}":{
+            "delete": {
+                "tags": [
+                    "Juegos"
+                ],
+                "summary": "Elimina un juego de videojuegos.",
+                "description": "<p>Servicio que elimina un videojuego existente.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del videojuego.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                  
+                ]
+            }
+        },
+        "/api/transacciones/mostrarTransacciones":{
+            "get": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Listado de todos las transacciones.",
+                "description": "<p>Servicio que devuelve la información detallada de todos las transacciones que existen en la base videojuegos.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "id_usuario": 2,
+                                    "id_juego": "1",
+                                    "id_metodo_pago": 3,
+                                    "fecha_compra": "2022-06-22",
+                                    "comentario": "buen juego",
+                                    "calificacion": 10,
+                                    "cantidad":2
+                                    
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Transacciones"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                }
+              
+            }
+        },
+        "/api/transacciones/obtenerTransaccion/{id}":{
+            "get": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Obtiene una transaccion dentro de videojuegos.",
+                "description": "<p>Servicio que devuelve la información detallada de una transacción.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "id_usuario": 1,
+                                    "id_juego": 1,
+                                    "id_metodo_pago": 3,
+                                    "fecha_compra": "2021-04-20",
+                                    "comentario": "buen juego",
+                                    "cantidad": 1
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Transacciones"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id de la transaccion.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                ]
+            }
+        },
+        "/api/transacciones/crearTransaccion" :{
+            "post" :{
+                "summary" : "Crear una transaccion",
+                "description": "<p>Servicio que permite crear una transacción en la base de datos.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "create",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters" : [
+                    {
+                        "name" : "Transaccion",
+                        "in" : "body",
+                        "description" : "Transaccion agregado",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoTransaccion"
+                        }
+                    }
+             
+                ],
+                "tags" : ["Transacciones"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Transaccion agregado"
+                    },
+                    "403":{
+                        "description" : "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/transacciones/actualizar/{id}" :{
+            "put" :{
+                "summary" : "Modificar una transaccion.",
+                "description": "<p>Servicio que permite modificar una transacción existente en la base de datos.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "update",
+                "consumes" :[
+                    "application/json"
+                ],
+                "produces" :[
+                    "application/json"
+                ],
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "description" : "Id de la transaccion.",
+                        "requiered" : true,
+                        "default" : 0
+                    },
+                    {
+                        "name" : "Juego",
+                        "in" : "body",
+                        "description" : "transaccion modificado.",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoTransaccion"
+                        }
+                    }
+              
+                ],
+                "tags" : ["Transacciones"],
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/transacciones/CalificarJuego/{id}" :{
+            "put" :{
+                "summary" : "Hacer una reseña y calificacion a un juego.",
+                "description": " Servicio que permite a un usuario calificar un juego y hacer una reseña del mismo. Los usuarios solo pueden calificar juegos que hayan comprado",
+                "operationId" : "update",
+                "consumes" :[
+                    "application/json"
+                ],
+                "produces" :[
+                    "application/json"
+                ],
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "description" : "Id de la transaccion.",
+                        "requiered" : true,
+                        "default" : 0
+                    },
+                    {
+                        "name" : "Transaccion",
+                        "in" : "body",
+                        "description" : "Reseña agregada.",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/CalificacionJuego"
+                        }
+                    }
+                 
+                ],
+                "tags" : ["Transacciones"],
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/transacciones/eliminar/{id}":{
+            "delete": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Elimina una transaccion de videojuegos.",
+                "description": "<p>Servicio que elimina una transaccion existente.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del videojuego.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+              
+                ]
+            }
+        },
+        "/api/transacciones/historialCompras/{id}":{
+            "get": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Historial de compras.",
+                "description": "<p>Servicio que devuelve la información de las compras que ha hecho un usuario. Mostrará información de la fecha de la compra, el nombre del juego, su precio y cuantos compró.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "fecha_compra": "2021-04-20",
+                                    "titulo": "game of thrones",
+                                    "precio": 100,
+                                    "cantidad": 1
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/historial"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del usuario.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                ]
+            }
+        },
+        "/api/transacciones/gananciaTotal/{id}":{
+            "get": {
+                "tags": [
+                    "Transacciones"
+                ],
+                "summary": "Ganancia total de compras.",
+                "description": "<p>Servicio que devuelve la ganancia total de los usuarios con el rol de vendedor.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "ganancia_total": 2000
+
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/ganancias"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del usuario.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                ]
+            }
+        },
+        "/api/transacciones/ganancias2" :{
+            "post" :{
+                "summary" : "Ganancia total de compras",
+                "description": "<p>Servicio que devuelve la ganancia total de los usuarios con el rol de vendedor.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "create",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters" : [
+                    {
+                        "name" : "id_usuario",
+                        "in" : "body",
+                        "description" : "Ganancias mostrados",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/idUsuario"
+                        }
+                    }
+           
+                ],
+                "tags" : ["Transacciones"],
+                "responses": {
+                    "200": {
+                      "description": "Ganancias mostrados",
+                      "schema": {
+                        "$ref": "#/definitions/ganancias"
+                      }
+                    },
+                    "403": {
+                      "description": "Ganancias no encontrados"
+                    }
+                  }
+            }
+        },
+        "/api/reembolsos/mostrarReembolsos":{
+            "get": {
+                "tags": [
+                    "Reembolsos"
+                ],
+                "summary": "Listado de todos los rembolsos.",
+                "description": "<p>Servicio que devuelve la información detallada de todos los reembolsos que existen en la base videojuegos.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "id_transacciones": 2,
+                                    "fecha_reembolso": "2022-06-22"
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Reembolsos"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+                
+            }
+        },
+        "/api/reembolsos/crearReembolso" :{
+            "post" :{
+                "summary" : "Generar un reembolsos",
+                "description": "<p>Servicio que permite crear un reembolso en la base de datos.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "create",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters" : [
+                    {
+                        "name" : "Reembolso",
+                        "in" : "body",
+                        "description" : "Reembolso agregado",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoReembolso"
+                        }
+                    }
+           
+                ],
+                "tags" : ["Reembolsos"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Reembolso agregado"
+                    },
+                    "403":{
+                        "description" : "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/reembolsos/reembolsoUsuario/":{
+            "post": {
+                "summary": "Reembolso de usuario",
+                "description": "<p>Servicio que lista los reembolsos de un usuario</p><p>&nbsp;</p><p><em></em></p>",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters": [
+                {
+                  "in": "body",
+                  "name": "credenciales",
+                  "description": "Credenciales del usuario",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/reembolsoUsuario"
+                  }
+                }
+              ],
+              "tags" : ["Reembolsos"],
+              "responses": {
+                "200": {
+                  "description": "Reembolsos mostrados",
+                  "schema": {
+                    "$ref": "#/definitions/Reembolsos"
+                  }
+                },
+                "403": {
+                  "description": "Reembolsos no encontrados"
+                }
+              }
+            }
+        },
+        "/api/reembolsos/actualizar/{id}" :{
+            "put" :{
+                "summary" : "Modificar un reembolso.",
+                "description": "<p>Servicio que permite actualizar un reembolso existente en la base de datos.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "update",
+                "consumes" :[
+                    "application/json"
+                ],
+                "produces" :[
+                    "application/json"
+                ],
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "description" : "Id del reembolso.",
+                        "requiered" : true,
+                        "default" : 0
+                    },
+                    {
+                        "name" : "Reembolso",
+                        "in" : "body",
+                        "description" : "Reembolso modificado.",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoReembolso"
+                        }
+                    }
+      
+                ],
+                "tags" : ["Reembolsos"],
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/reembolsos/eliminar/{id}":{
+            "delete": {
+                "tags": [
+                    "Reembolsos"
+                ],
+                "summary": "Elimina un reembolso de videojuegos.",
+                "description": "<p>Servicio que elimina un reembolso existente.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del reembolso.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+             
+                ]
+            }
+        },
+        "/api/usuarios/validarUsuario": {
+            "post": {
+                "summary": "Validar un usuario",
+                "description": "<p>Servicio que permite validar un usuario</p><p>&nbsp;</p><p><em></em></p>",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters": [
+                {
+                  "in": "body",
+                  "name": "credenciales",
+                  "description": "Credenciales del usuario",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/CredencialesUsuario"
+                  }
+                }
+              ],
+              "tags" : ["Usuarios"],
+              "responses": {
+                "200": {
+                  "description": "Usuario validado exitosamente",
+                  "schema": {
+                    "$ref": "#/definitions/Usuario"
+                  }
+                },
+                "403": {
+                  "description": "Usuario no encontrado"
+                }
+              }
+            }
+        },
+        "/api/carritos/crearCarrito" :{
+            "post" :{
+                "summary" : "Creando un carrito",
+                "description": "<p>Servicio que agrega un juego en el carrito para los usuarios.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "create",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters" : [
+                    {
+                        "name" : "Carrito",
+                        "in" : "body",
+                        "description" : "Carrito agregado",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoCarrito"
+                        }
+                    }
+             
+                ],
+                "tags" : ["Carritos"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Juego agregado al carrito  del usuario"
+                    },
+                    "403":{
+                        "description" : "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/carritos/mostrarCarritos":{
+            "get": {
+                "tags": [
+                    "Carritos"
+                ],
+                "summary": "Listado de todos los carritos.",
+                "description": "<p>Servicio que devuelve la información detallada de todos los carritos de los usuarios que existen en la base videojuegos.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "id_usuarios": 2,
+                                    "id_juegos": 3,
+                                    "cantidad": 1
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/Carritos"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+          
+            }
+        },
+        "/api/carritos/actualizar/{id}": {
+            "put": {
+                "summary": "Modificando un carrito.",
+                "description": "Servicio que permite actualizar la informacion del carrito.",
+                "operationId": "update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in": "path",
+                        "description": "id del usuario",
+                        "required": true,
+                        "default":0
+                    },
+                    {
+                        "name":"Carrito",
+                        "in": "body",
+                        "description":"Id del carrito",
+                        "requiered" : true,
+                        "schema":{
+                            "$ref": "#/definitions/NuevoCarrito"
+                        }
+
+                    }
+                   
+                ],
+                "tags": ["Carritos"],
+                "responses":{
+                    "201":{
+                        "description":"Modificado con exito"
+                    },
+                    "403":{
+                        "description":"Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/carritos/eliminar/{id}":{
+            "delete": {
+                "tags": ["Carritos"],
+                "summary": "Elimina un carrito de videojuegos.",
+                "description": "<p>Servicio que elimina una tupla de la tabla de carritos.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del carrito.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                    
+                ]
+            }
+        },
+        "/api/carritos/eliminarporUsuario/{id}":{
+            "delete": {
+                "tags": ["Carritos"],
+                "summary": "Elimina un carrito de de usuario videojuegos.",
+                "description": "<p>Servicio que elimina todas las tupla de la tabla de carritos de un usuario.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del usuario.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                    
+                ]
+            }
+        },
+        "/api/carritos/mostrarCarritoUsuario": {
+            "post": {
+                "summary": "Ver el carrito de un usuario",
+                "description": "<p>Servicio que permite ver la informacion del carrito del id de un usuario</p><p>&nbsp;</p><p><em></em></p>",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters": [
+                {
+                  "in": "body",
+                  "name": "id_usuario",
+                  "description": "Id del usuario",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/UsuarioCarrito"
+                  }
+                }
+              ],
+              "tags" : ["Carritos"],
+              "responses": {
+                "200": {
+                  "description": "Carrito de usuario validado exitosamente",
+                  "schema": {
+                    "$ref": "#/definitions/Carrito"
+                  }
+                },
+                "403": {
+                  "description": "Id de usuario no encontrado"
+                }
+              }
+            }
+        },
+        "/api/carritos/mostrarCarroUsuario/{id}": {
+            "get":{
+                "tags":["Carritos"],
+                "summary":"Listado de usuarios",
+                "description":"Servicio que muestra el carrito de un vendedor",
+                "responses":{
+                    "200":{
+                    "description":"OK",
+                    "examples":{
+                        "application/json":[
+                            {"titulo": "game of thrones",
+                            "cantidad": 1
+                      
+                        }
+                        ]
+                    },
+                    "schema":{
+                        "$ref": "#/definitions/MostrarCarroUsuario"
+                    }
+                    },
+                    "403":{
+                        "description":"Prohibido"
+                    }
+                },
+                "parameters":[{
+                    "name":"id",
+                    "in":"path",
+                    "requiered":true,
+                    "description": "id",
+                    "type": "number",
+                    "default":"1"
+                }]
+            }
+        },
+        "/api/metodo_pago/mostrarMetodosPago":{
+            "get": {
+                "tags": [
+                    "Metodo de pago"
+                ],
+                "summary": "Listado de todos los metodos de pago de los usuarios.",
+                "description": "<p>Servicio que devuelve la información detallada de los metodos de pago que existen en la base videojuegos.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "id_usuario": 1,
+                                    "num_tarjeta": "1234123412341234",
+                                    "direccion": "Calle Juan de Dios Peza #123 Colonia San Rafael"
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/MetodosPago"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+                
+            }
+        },
+        "/api/metodo_pago/obtenerMetodoPago/{id}":{
+            "get": {
+                "tags": [
+                    "Metodo de pago"
+                ],
+                "summary": "Obtiene un método de pago dentro de videojuegos.",
+                "description": "<p>Servicio que devuelve la información detallada de un método de pago existente.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "id": 1,
+                                    "id_usuario": 1,
+                                    "num_tarjeta": "1234123412341234",
+                                    "direccion": "Calle Juan de Dios Peza #123 Colonia San Rafael"
+                                }
+                            ]
+                        },
+                        "schema":{
+                            "$ref": "#/definitions/MetodosPago"
+                        }
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del metodo de pago.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                ]
+            }
+        },
+        "/api/metodo_pago/pagoUsuario/":{
+            "post": {
+                "summary": "Metodos de usuario",
+                "description": "<p>Servicio que lista los metodos de pago de un usuario</p><p>&nbsp;</p><p><em></em></p>",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters": [
+                {
+                  "in": "body",
+                  "name": "credenciales",
+                  "description": "Credenciales del usuario",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/metodoPagoUsuario"
+                  }
+                }
+              ],
+              "tags" : ["Metodo de pago"],
+              "responses": {
+                "200": {
+                  "description": "Metodos mostrados",
+                  "schema": {
+                    "$ref": "#/definitions/MetodosPago"
+                  }
+                },
+                "403": {
+                  "description": "Metodos de pago no encontrados"
+                }
+              }
+            }
+        },
+        "/api/metodo_pago/crearMetodoPago" :{
+            "post" :{
+                "summary" : "Crear un método de pago",
+                "description":"<p>Servicio que crea un método de pago para un usuario.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "create",
+                "produces" : [
+                    "application/json"
+                ],
+                "parameters" : [
+                    {
+                        "name" : "Metodo de pago",
+                        "in" : "body",
+                        "description" : "Metodo de pago agregado",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoMetodoPago"
+                        }
+                    }
+                    
+                ],
+                "tags" : ["Metodo de pago"],
+                "responses" : {
+                    "200" : {
+                        "description" : "Metodo de pago agregado"
+                    },
+                    "403":{
+                        "description" : "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/metodo_pago/actualizarMetodoPago/{id}" :{
+            "put" :{
+                "summary" : "Modificar un metodo de pago.",
+                "description":"<p>Servicio que actualiza un método de pago existente.</p><p>&nbsp;</p><p><em></em></p>",
+                "operationId" : "update",
+                "consumes" :[
+                    "application/json"
+                ],
+                "produces" :[
+                    "application/json"
+                ],
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "description" : "Id del metodo de pago.",
+                        "requiered" : true,
+                        "default" : 0
+                    },
+                    {
+                        "name" : "Metodo de pago",
+                        "in" : "body",
+                        "description" : "Metodo de pago modificado.",
+                        "requiered" : true,
+                        "schema" : {
+                            "$ref" : "#/definitions/NuevoMetodoPago"
+                        }
+                    }
+                    
+                ],
+                "tags" : ["Metodo de pago"],
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                }
+            }
+        },
+        "/api/metodo_pago/eliminarMetodoPago/{id}":{
+            "delete": {
+                "tags": [
+                    "Metodo de pago"
+                ],
+                "summary": "Elimina un metodo de pago de videojuegos.",
+                "description": "<p>Servicio que elimina un metodo de pago existente.</p><p>&nbsp;</p><p><em></em></p>",
+                "responses": {
+                    "200":{
+                        "description": "OK"
+                    },
+                    "403":{
+                        "description": "Prohibido"
+                    }
+                    
+                },
+                "parameters" :[
+                    {
+                        "name" : "id",
+                        "in" : "path",
+                        "requiered" : "true",
+                        "description" : "Id del Metodo de pago.",
+                        "type" : "number",
+                        "default" : "0"
+                    }
+                   
+                ]
+            }
+        }
+    },
+    "definitions":{
+        "Usuario" : {
+            "type" : "object",
+            "properties" : {
+                "id" : {
+                    "type" : "number",
+                    "description" : "Código que permite identificar al usuario."
+                },
+                "nombre" : {
+                    "type": "string",
+                    "description" : "Nombre del usuario."
+                },
+                "nickname" : {
+                    "type": "string",
+                    "description" : "apodo del usuario."
+                },
+                "correo" : {
+                    "type" : "string",
+                    "description" : "Correo electronico del usuario."
+                },
+                "contrasena" : {
+                    "type" : "string",
+                    "description" : "Contraseña para la cuenta del usuario."
+                },
+                "id_rol" : {
+                    "type" : "number",
+                    "description" : "Id del rol del usuario."
+                }
+            }
+        },
+        "Usuarios" : {
+            "type" : "array",
+            "items" : {
+                "$ref" : "#/definitions/Usuario"
+            }
+        },
+        "NuevoUsuario" : {
+            "type" : "object",
+            "properties" : {
+                "nombre" : {
+                    "type": "string",
+                    "description" : "Nombre del usuario."
+                },
+                "nickname" : {
+                    "type": "string",
+                    "description" : "Apodo del usuario."
+                },
+                "correo" : {
+                    "type" : "string",
+                    "description" : "Correo electronico del usuario."
+                },
+                "password" : {
+                    "type" : "string",
+                    "description" : "Contraseña para la cuenta del usuario."
+                },
+                "id_rol" : {
+                    "type" : "number",
+                    "description" : "Id del rol del usuario."
+                }
+            }
+        },
+        "Rol" : {
+            "type" : "object",
+            "properties" : {
+                "id" : {
+                    "type" : "number",
+                    "description" : "Código que permite identificar el rol."
+                },
+                "rol" : {
+                    "type" : "string",
+                    "description" : "Nombre del rol."
+                }
+            }
+        },
+        "Roles" : {
+            "type" : "array",
+            "items" : {
+                "$ref" : "#/definitions/Rol"
+            }
+        },
+        "NuevoRol" : {
+            "type" : "object",
+            "properties" : {
+                "rol" : {
+                    "type" : "string",
+                    "description" : "Nombre del rol."
+                }
+            }
+        },
+        "Juego" : {
+            "type" : "object",
+            "properties" : {
+                "id" : {
+                    "type" : "number",
+                    "description" : "Codigo que permite identificar el videojuego."
+                },
+                "titulo" : {
+                    "type": "string",
+                    "description" : "Titulo del videojuego."
+                },
+                "descripcion" : {
+                    "type": "string",
+                    "description" : "Descripcion del videojuego."
+                },
+                "genero" : {
+                    "type" : "string",
+                    "description" : "Genero del videojuego."
+                },
+                "fecha_lanzamiento" : {
+                    "type" : "string",
+                    "description" : "Fecha del lanzamiento del videojuego."
+                },
+                "precio" : {
+                    "type" : "number",
+                    "description" : "Precio del videojuego."
+                },
+                "estado" : {
+                    "type" : "number",
+                    "description" : "Indica si el juego esta dado de alta."
+                },
+                "id_usuario" : {
+                    "type" : "number",
+                    "description" : "Indica el id del vendedor."
+                }
+            }
+        },
+        "Juegos" : {
+            "type" : "array",
+            "items" : {
+                "$ref" : "#/definitions/Juego"
+            }
+        },
+        "NuevoJuego" : {
+            "type" : "object",
+            "properties" : {
+                "titulo" : {
+                    "type": "string",
+                    "description" : "Titulo del videojuego."
+                },
+                "descripcion" : {
+                    "type": "string",
+                    "description" : "Descripcion del videojuego."
+                },
+                "genero" : {
+                    "type" : "string",
+                    "description" : "Genero del videojuego."
+                },
+                "fecha_lanzamiento" : {
+                    "type" : "string",
+                    "description" : "Fecha del lanzamiento del videojuego."
+                },
+                "precio" : {
+                    "type" : "number",
+                    "description" : "Precio del videojuego."
+                },
+                "estado" : {
+                    "type" : "string",
+                    "description" : "Indica si el juego esta dado de alta."
+                },
+                "id_usuario" : {
+                    "type" : "number",
+                    "description" : "Indica el id del vendedor."
+                }
+            }
+        },
+        "Transaccion" : {
+            "type" : "object",
+            "properties" : {
+                "id" : {
+                    "type" : "number",
+                    "description" : "Codigo que permite identificar la transaccion."
+                },
+                "id_usuario" : {
+                    "type": "number",
+                    "description" : "Id del usuario que hizo una compra."
+                },
+                "id_juego" : {
+                    "type": "number",
+                    "description" : "Id del juego que adquirio el usuario."
+                },
+                "id_metodo_pago" : {
+                    "type": "number",
+                    "description" : "Id del metodo del pago del usuario."
+                },
+                "fecha_compra" : {
+                    "type" : "string",
+                    "description" : "Fecha en que se realizo la compra."
+                },
+                "comentario" : {
+                    "type" : "string",
+                    "description" : "Reseña del usuario."
+                },
+                "calificacion" : {
+                    "type" : "number",
+                    "description" : "Calificacion del usuario al juego."
+                },
+                "cantidad":{
+                    "type" : "number",
+                    "description" : "Cantidad comprada del articulo."
+                }
+            }
+        },
+        "Transacciones" : {
+            "type" : "array",
+            "items" : {
+                "$ref" : "#/definitions/Transaccion"
+            }
+        },
+        "NuevoTransaccion" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuario" : {
+                    "type": "number",
+                    "description" : "Id del usuario que hizo una compra."
+                },
+                "id_juego" : {
+                    "type": "number",
+                    "description" : "Id del juego que adquirio el usuario."
+                },
+                "id_metodo_pago" : {
+                    "type": "number",
+                    "description" : "Id del metodo del pago del usuario."
+                },
+                "fecha_compra" : {
+                    "type" : "string",
+                    "description" : "Fecha en que se realizo la compra."
+                },
+                "comentario" : {
+                    "type" : "string",
+                    "description" : "Reseña del usuario."
+                },
+                "calificacion" : {
+                    "type" : "number",
+                    "description" : "Calificacion del usuario al juego."
+                },
+                "cantidad":{
+                    "type" : "number",
+                    "description" : "Cantidad comprada del articulo."
+                }
+            }
+        },
+        "Reembolso" : {
+            "type" : "object",
+            "properties" : {
+                "id" : {
+                    "type": "number",
+                    "description" : "Id del reembolso."
+                },
+                "id_transacciones" : {
+                    "type": "number",
+                    "description" : "Id de la transaccion que adquirio el usuario."
+                },
+                "fecha_reembolso" : {
+                    "type" : "string",
+                    "description" : "Fecha en que se realizo el reembolso."
+                }
+            }
+        },
+        "Reembolsos" : {
+            "type" : "array",
+            "items" : {
+                "$ref" : "#/definitions/Reembolso"
+            }
+        },
+        "NuevoReembolso" : {
+            "type" : "object",
+            "properties" : {
+                "id_transacciones" : {
+                    "type": "number",
+                    "description" : "Id de la transaccion que adquirio el usuario."
+                },
+                "fecha_reembolso" : {
+                    "type" : "string",
+                    "description" : "Fecha en que se realizo el reembolso."
+                }
+            }
+        },
+        "CredencialesUsuario": {
+            "type": "object",
+            "properties": {
+              "correo": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+        },
+        "JuegoGenero": {
+            "type": "object",
+            "properties": {
+              "genero": {
+                "type": "string"
+              }
+            }
+        },
+        "tituloJuego": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description" : "id del videojuego."
+                  },
+              "titulo": {
+                "type": "string",
+                "description" : "Titulo del videojuego."
+              },
+              "descripcion": {
+                "type": "string",
+                "description" : "Descripcion del videojuego."
+              },
+                "genero" : {
+                    "type" : "string",
+                    "description" : "Genero del videojuego."
+                },
+                "fecha_lanzamiento" : {
+                    "type" : "string",
+                    "description" : "Fecha del lanzamiento del videojuego."
+                },
+                "precio" : {
+                    "type" : "number",
+                    "description" : "Precio del videojuego."
+                }
+            }
+        },
+        "Carrito" : {
+            "type" : "object",
+            "properties" : {
+                "id" : {
+                    "type": "number",
+                    "description" : "Id del carrito."
+                },
+                "id_usuarios" : {
+                    "type": "number",
+                    "description" : "Id del usuario en el carrito."
+                },
+                "id_juegos" : {
+                    "type" : "number",
+                    "description" : "Id del juego en el carrito del usuario."
+                },
+                "cantidad" : {
+                    "type" : "number",
+                    "description" : "Cantidad que quiere el usuario a comprar."
+                }
+            }
+        },
+        "Carritos" : {
+            "type" : "array",
+            "items" : {
+                "$ref" : "#/definitions/Carrito"
+            }
+        },
+        "NuevoCarrito" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuarios" : {
+                    "type": "number",
+                    "description" : "Id del usuario en el carrito."
+                },
+                "id_juegos" : {
+                    "type" : "number",
+                    "description" : "Id del juego en el carrito del usuario."
+                },
+                "cantidad" : {
+                    "type" : "number",
+                    "description" : "Cantidad que quiere el usuario a comprar."
+                }
+            }
+        },
+        "UsuarioCarrito" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuarios" : {
+                    "type": "number",
+                    "description" : "Id del usuario en el carrito."
+                }
+            }
+        },
+        "CalificacionJuego" : {
+            "type" : "object",
+            "properties" : {
+                "comentario" : {
+                    "type": "string",
+                    "description" : "Reseña de un usuario del juego."
+                },
+                "calificacion" : {
+                    "type": "number",
+                    "description" : "Calificacion del usuario al juego."
+                }
+            }
+        },
+        "estadoJuego" : {
+            "type" : "object",
+            "properties" : {
+                "estado" : {
+                    "type" : "string",
+                    "description" : "Indica si el juego esta dado de alta."
+                }
+            }
+        },
+        "historial":{
+            "type" : "object",
+            "properties": {
+                "id":{
+                    "type" : "number",   
+                    "description" : "Id de la compra."
+                },
+                "fecha_compra":{
+                    "type" : "string",   
+                    "description" : "Fecha en que se realizo la compra."
+                },
+                "titulo":{
+                    "type" : "string",
+                    "description" : "Titulo del videojuego."
+                },
+                "precio":{
+                    "type" : "number",
+                    "description" : "Precio del videojuego."
+                },
+                "cantidad":{
+                    "type" : "number",
+                    "description" : "Cantidad comprada del articulo."
+                }
+            }
+        },
+        "ganancias":{
+            "type" : "object",
+            "properties": {
+                "ganancia_total":{
+                    "type" : "number",   
+                    "description" : "Total de lo que ganó un usuario"
+                }
+            }
+        },
+        "MetodoPago":{
+            "type" : "object",
+            "properties": {
+                "id":{
+                    "type" : "number",   
+                    "description" : "Id del metodo de pago."
+                },
+                "id_usuario":{
+                    "type" : "number",   
+                    "description" : "Id del usuario."
+                },
+                "num_tarjeta":{
+                    "type" : "string",   
+                    "description" : "Numero de tarjeta."
+                },
+                "direccion":{
+                    "type" : "string",   
+                    "description" : "Direccion del usuario."
+                }
+            }
+        },
+        "MetodosPago":{
+            "type" : "array",
+            "items" : {
+                "$ref" : "#/definitions/MetodoPago"
+            }
+        },
+        "NuevoMetodoPago" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuario":{
+                    "type" : "number",   
+                    "description" : "Id del usuario."
+                },
+                "num_tarjeta":{
+                    "type" : "string",   
+                    "description" : "Numero de tarjeta."
+                },
+                "direccion":{
+                    "type" : "string",   
+                    "description" : "Direccion del usuario."
+                }
+            }
+
+        },
+        "MostrarCarroUsuario" : {
+            "type" : "object",
+            "properties" : {
+                "id" : {
+                    "type": "string",
+                    "description" : "Id del carro."
+                },
+                "titulo" : {
+                    "type": "string",
+                    "description" : "Titulo del juego."
+                },
+                "cantidad" : {
+                    "type" : "number",
+                    "description" : "Cantidad que quiere el usuario a comprar."
+                },
+                "id_juegos" : {
+                    "type": "string",
+                    "description" : "Id del juego."
+                }
+                
+
+            }
+
+        },
+        "titulo" : {
+            "type" : "object",
+            "properties" : {
+                "titulo":{
+                    "type" : "string",   
+                    "description" : "Titulo del juego."
+                }
+            }
+
+        },
+        "metodoPagoUsuario" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuario":{
+                    "type" : "number",   
+                    "description" : "Id del usuario."
+                }
+            }
+
+        },
+        "reembolsoUsuario" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuario":{
+                    "type" : "number",   
+                    "description" : "Id del usuario."
+                }
+            }
+
+        },
+        "idUsuario" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuario":{
+                    "type" : "number",   
+                    "description" : "Id del usuario."
+                }
+            }
+
+        },
+        "pagar" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuario":{
+                    "type" : "number",   
+                    "description" : "Id del usuario."
+                },
+                "id_juego":{
+                    "type" : "number",   
+                    "description" : "Id del juego."
+                },
+                "cantidad":{
+                    "type" : "number",   
+                    "description" : "Numero de copias del juego."
+                }
+            }
+
+        },
+        "pago" : {
+            "type" : "object",
+            "properties" : {
+                "id_usuario":{
+                    "type" : "number",   
+                    "description" : "Id del usuario."
+                }
+            }
+
+        }
+    }
+}
